@@ -92,8 +92,7 @@ export default {
     return {
       todo: "",
       list: [],
-      activeNames: ['1'],
-      flag:0
+      activeNames: ['1']
     };
   },
   methods: {
@@ -105,9 +104,8 @@ export default {
         date:new Date().toLocaleDateString(),
         title: this.todo,
         state: 1,
-        flag:this.flag
+        flag:new Date().getTime()
       });
-      this.flag++;
       this.todo = "";
     },
     removeItem(flag) {

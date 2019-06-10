@@ -47,7 +47,6 @@ export default {
     return {
       todo: "",
       list: [],
-      activeNames: ['1'],
       flag:0
     };
   },
@@ -70,6 +69,9 @@ export default {
       //this.list.splice(index, 1); 
       console.log(flag);
       this.list=this.list.filter(item=>item.flag!==flag)
+    },
+    saveChange(){
+      localStorage.setItem('todolist',JSON.stringify(this.list))
     }
   },
   computed:{
@@ -78,7 +80,10 @@ export default {
         return this.list.filter(item=>item.state===state)
       }
     }
-  }
+  },
+  /* mounted(){
+    this.list=JSON.parse(localStorage.getItem('todolist'))
+  } */
 };
 </script>
 <style lang="scss">
