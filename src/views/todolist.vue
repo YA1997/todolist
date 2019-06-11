@@ -10,7 +10,10 @@
     ></el-input>
     <el-button type="success" size="mini" @click="addItem">添加</el-button>
     <el-collapse v-model="activeNames" style="width:600px;margin:0 auto">
-      <el-collapse-item v-for="(item, index) in configList" :key="index" :title=item[1] :name=item[0]>
+      <el-collapse-item v-for="(item, index) in configList" :key="index"  :name=item[0]>
+        <template slot="title">
+        <h2>{{item[1]}}</h2><i :class="item[4]"></i>
+        </template>
         <template>
           <el-table :data="filterArray(item[0])" style="width: 100%">
             <el-table-column label="日期" width="180">
@@ -26,7 +29,7 @@
             </el-table-column>
             <el-table-column label="操作">
               <template slot-scope="scope">
-                <el-button size="mini" @click="scope.row.state=item[3]">{{item[2]}}</el-button>
+                <el-button size="mini" @click="scope.row.state=item[3];saveChange()">{{item[2]}}</el-button>
                 <el-button size="mini" type="danger" @click="removeItem(scope.row.flag)">删除</el-button>
               </template>
             </el-table-column>
@@ -116,7 +119,7 @@ export default {
       todo: "",
       list: [],
       activeNames: ['1'],
-      configList:[[1,'新建','开始',2],[2,'进行中','完成',3],[3,'已完成','重做',1]]
+      configList:[[1,'新建','开始',2,'el-icon-s-opportunity'],[2,'进行中','完成',3,'el-icon-loading'],[3,'已完成','重做',1,'el-icon-finished']]
     };
   },
   methods: {
@@ -131,13 +134,18 @@ export default {
         flag:new Date().getTime()
       });
       this.todo = "";
+      localStorage.setItem('todolist',JSON.stringify(this.list))
     },
     removeItem(flag) {
       //用index的话，v-for返回的index不是list的index，而是filter的index，无法准确删除
       //this.list.splice(index, 1); 
       console.log(flag);
-      this.list=this.list.filter(item=>item.flag!==flag)
-    }
+      this.list=this.list.filter(item=>item.flag!==flag);
+      localStorage.setItem('todolist',JSON.stringify(this.list))
+    },
+    saveChange(){
+      localStorage.setItem('todolist',JSON.stringify(this.list))
+    },
   },
   computed: {
     filterArray() {
@@ -145,14 +153,21 @@ export default {
         return this.list.filter(item => item.state === state);
       };
     }
+  },
+  mounted(){
+    this.list=JSON.parse(localStorage.getItem('todolist'))||[]
   }
 };
 </script>
 <style lang="scss">
 @import "../assets/sass/test.scss";
 .todolist {
-  li {
-    margin-top: 5px;
+  .el-collapse-item{
+    .el-collapse-item__header{
+      i {
+        font-size: 20px;
+      }
+    }
   }
 }
 </style>
