@@ -73,7 +73,7 @@ export default {
       //this.list.splice(index, 1); 
       console.log(flag);
       this.list=this.list.filter(item=>item.flag!==flag);
-      localStorage.setItem('todolist',JSON.stringify(this.list)) 
+      localStorage.setItem('todolist',JSON.stringify(this.list));
     }
   },
   computed:{
