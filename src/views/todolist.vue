@@ -32,7 +32,7 @@
           <i :class="item[4]"></i>
         </template>
         <template>
-          <el-table :data="filterArray(item[0])" style="width: 100%">
+          <el-table :data="filterArray(item[0])" style="width: 100%" v-loading="loading">
             <el-table-column label="日期" width="180">
               <template slot-scope="scope">
                 <i class="el-icon-time"></i>
@@ -82,11 +82,12 @@ export default {
         title: "",
         content: ""
       },
+      loading:false,
       list: [],
       activeNames: ["1"],
       configList: [
         [1, "新建", "开始", 2, "el-icon-s-opportunity"],
-        [2, "进行中", "完成", 3, "el-icon-loading"],
+        [2, "进行中", "完成", 3, "el-icon-circle-close"],
         [3, "已完成", "重做", 1, "el-icon-finished"]
       ],
       dialogFormVisible: false,
@@ -123,7 +124,7 @@ export default {
   },
   computed: {
     filterArray() {
-      return function(state) {
+      return state => {
         return this.list.filter(item => item.state === state);
       };
     }
